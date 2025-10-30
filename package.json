@@ -1,0 +1,14 @@
+{
+  "name": "pptx-watcher",
+  "version": "1.0.0",
+  "description": "Автоматический конвертер PPTX в PDF",
+  "main": "pptx-watcher.js",
+  "scripts": {
+    "start": "node pptx-watcher.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chokidar": "^3.5.3",
+    "form-data": "^4.0.0"
+  }
+}

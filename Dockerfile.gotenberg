@@ -1,0 +1,17 @@
+FROM gotenberg/gotenberg:8
+
+USER root
+
+# Копируем Windows-шрифты в контейнер
+COPY fonts/ /usr/share/fonts/truetype/windows/
+
+# Устанавливаем fontconfig для управления шрифтами
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends fontconfig && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Обновляем кэш шрифтов с применением конфигурации
+RUN fc-cache -f -v
+
+USER gotenberg

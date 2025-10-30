@@ -1,0 +1,42 @@
+services:
+  gotenberg:
+    build:
+      context: .
+      dockerfile: Dockerfile.gotenberg
+    container_name: gotenberg
+    restart: unless-stopped
+    environment:
+      - LIBREOFFICE_DISABLE_OPENGL=true
+    command:
+      - "gotenberg"
+      - "--api-timeout=60s"
+      - "--log-level=info"
+      - "--libreoffice-disable-routes=false"
+      - "--libreoffice-restart-after=10"
+    restart: unless-stopped
+    networks:
+      - pptx-converter
+
+  watcher:
+    build:
+      context: .
+      dockerfile: Dockerfile.watcher
+    container_name: pptx-watcher
+    restart: unless-stopped
+    volumes:
+      - ./pptx:/app/pptx
+      - ./pdf:/app/pdf
+    environment:
+      - GOTENBERG_URL=http://gotenberg:3000
+      - INPUT_DIR=/app/pptx
+      - OUTPUT_DIR=/app/pdf
+      - CLEANUP_DAYS=7
+    depends_on:
+      - gotenberg
+    restart: unless-stopped
+    networks:
+      - pptx-converter
+
+networks:
+  pptx-converter:
+    driver: bridge

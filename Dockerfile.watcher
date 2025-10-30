@@ -1,0 +1,22 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Установка зависимостей
+RUN apk add --no-cache curl
+
+# Копируем package.json и устанавливаем зависимости
+COPY package.json ./
+RUN npm install --production
+
+# Копируем скрипт watcher
+COPY pptx-watcher.js ./
+
+# Создаем директории
+RUN mkdir -p /app/pptx /app/pdf
+
+# Скрипт запуска с проверкой доступности Gotenberg
+COPY docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
