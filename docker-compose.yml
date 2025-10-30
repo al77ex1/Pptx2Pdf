@@ -13,7 +13,6 @@ services:
       - "--log-level=info"
       - "--libreoffice-disable-routes=false"
       - "--libreoffice-restart-after=10"
-    restart: unless-stopped
     networks:
       - pptx-converter
 
@@ -33,7 +32,6 @@ services:
       - CLEANUP_DAYS=7
     depends_on:
       - gotenberg
-    restart: unless-stopped
     networks:
       - pptx-converter
 
